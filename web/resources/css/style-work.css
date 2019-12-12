@@ -52,7 +52,7 @@ a.link-go{
 .spinner{
     background: white;
     transition: 1s;
-    width: 100%;
+    width: 50%;
     height: 100%;
 }
 .spinner:active{
