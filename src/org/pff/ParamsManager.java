@@ -17,15 +17,15 @@ public class ParamsManager {
 
     }
     public static boolean isValidX(double value){
-        return value * value <= 9;
+        return value>=-5 && value <=3;
     }
 
     public static boolean isValidY(double value){
-        return (value +1)*(value +1) <= 16;
+        return value*value <= 25;
     }
 
     public static boolean isValidR(double value){
-        return value >= 1.0 && value <= 3.0;
+        return value >= 2.0 && value <= 5.0;
     }
     public static boolean graphAvailable(double value){
         return value*value <= 36;
