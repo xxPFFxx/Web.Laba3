@@ -28,23 +28,21 @@
                 <div class="d-header">
                     Выберите Х
                 </div>
-                <br/>
-                <p:spinner id="param-x" name="param-x" stepFactor="1" min="-3" max="3" value="#{result.curX}" styleClass="spinner">
-
-                </p:spinner><br/>
+                <p:spinner id="param-x" name="param-x" stepFactor="1" min="-5" max="3" value="#{result.curX}" styleClass="spinner">
+                </p:spinner>
                 <h:message for="param-x" style="color:red"/>
+                <br/>
                 <div class="d-header">
                     Введите Y
                 </div>
-                <br/>
                 <h:inputText id="param-y" name="param-y" required="true" styleClass="inputY" maxlength="8" requiredMessage="Введите значение" value="#{result.curY}">
                     <f:validator validatorId="ValidatorY"/>
-                </h:inputText><br/>
+                </h:inputText>
                 <h:message for="param-y" style="color:red"/>
+                <br/>
                 <div class="d-header">
                     Выберите R
                 </div>
-                <br/>
                 <h:selectOneRadio id="param-r" name="param-r" layout="lineDirection" styleClass="radioR" onchange="redraw();" value="#{result.curR}">
                     <f:selectItem itemLabel="1.0" itemValue="1.0"/>
                     <f:selectItem itemLabel="1.5" itemValue="1.5"/>
