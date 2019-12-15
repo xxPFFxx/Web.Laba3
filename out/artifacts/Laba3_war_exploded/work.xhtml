@@ -66,7 +66,22 @@
             </h:form>
 
             <br/>
-
+            <h:form id="removeForm">
+                <h:commandButton type="submit"
+                                 value="Удалить точку"
+                                 action="#{result.removeResult}"
+                                 styleClass="link-go"
+                />
+                <br/>
+                <br/>
+                <h:inputText id="param-id" name="param-id" styleClass="inputID" required="true" maxlength="6" requiredMessage="введите значение ID который хотите удалить">
+                    <f:validator validatorId="ValidatorID"/>
+                </h:inputText><br/>
+                <h:message for="param-id" style="color:red"/>
+                <p:remoteCommand name="callRedraw"
+                                 action="#{result.callRedraw()}" update="result-table" partialSubmit="true" process="@this"/>
+            </h:form>
+            <br/><br/><br/>
             <p:outputPanel id="runtime_panel" autoUpdate="true" />
 
             <h:dataTable   var="res" value="#{result.allResults}"
@@ -83,10 +98,6 @@
                 <h:column>
                     <f:facet name="header">Y </f:facet>
                     #{res.y}
-                </h:column>
-                <h:column>
-                    <f:facet name="header">R</f:facet>
-                    #{res.r}
                 </h:column>
                 <h:column>
                     <f:facet name="header">Результат</f:facet>

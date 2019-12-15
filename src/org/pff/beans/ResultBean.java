@@ -143,6 +143,21 @@ public class ResultBean implements Serializable {
             PrimeFaces.current().executeScript(drawPointJSD(r.getX(), r.getY(), col));
         }
     }
+    public void removeResult(){
+        Map<String, String> requestParameterMap = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+        String sid = requestParameterMap.get("removeForm:param-id");
+        int id = Integer.parseInt(sid);
+        System.out.println(id + " " + "fdddddddddfdfdfdfdfd");
+
+        try{
+            ormSession.getTransaction().begin();
+            ormSession.createQuery("delete from Result e where e.resultID = :id").setParameter("id", id).executeUpdate();
+            ormSession.getTransaction().commit();
+        }catch (Exception e){
+            ormSession.getTransaction().rollback();
+        }
+    }
+
     private void addPoint(double x, double y, double r, PointState match)
     {
         try{
