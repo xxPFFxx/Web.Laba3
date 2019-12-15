@@ -73,6 +73,10 @@
                          styleClass="article-table"
                          rules="all" id="result-table">
                 <h:column>
+                    <f:facet name="header">ID</f:facet>
+                    #{res.resultID}
+                </h:column>
+                <h:column>
                     <f:facet name="header">X</f:facet>
                     #{res.x}
                 </h:column>

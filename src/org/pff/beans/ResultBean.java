@@ -8,8 +8,10 @@ import org.pff.ParamsManager;
 import org.pff.PointState;
 import org.pff.Result;
 
+import javax.ejb.ApplicationException;
 import javax.faces.bean.ApplicationScoped;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -23,6 +25,7 @@ import java.util.List;
 import java.util.Map;
 
 import static org.pff.Result.drawPointJS;
+import static org.pff.Result.drawPointJSD;
 
 @ApplicationScoped
 @ManagedBean(name="result")
@@ -112,6 +115,7 @@ public class ResultBean implements Serializable {
                 addPoint(x,y,r, PointState.ODZ);
                 col = "'#AFAFAF'";
             }
+            System.out.println("stfu");
             PrimeFaces.current().executeScript(drawPointJS(x, y, col));
             //return addResult(x,y,r);
 
@@ -124,16 +128,19 @@ public class ResultBean implements Serializable {
         return;
     }
     public void callRedraw(){
-        try {
-            Map<String, String> requestParameterMap = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
-            data.clear();
-            String sr = requestParameterMap.get("pR").replace(',', '.');
-
-
-
-        }
-        catch(Exception e){
-
+        Map<String, String> requestParameterMap = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+        String sr = requestParameterMap.get("pR").replace(',','.');
+        double ssr= Double.parseDouble(sr);
+        List<Result> res = getAllResults();
+        for (int i = 0; i < res.size(); i++) {
+            Result r = res.get(i);
+            String col;
+            if (ParamsManager.isInArea(r.getX(),r.getY(),ssr)){
+                col = "'#00FF00'";
+            } else {
+                col = "'#FF0000'";
+            }
+            PrimeFaces.current().executeScript(drawPointJSD(r.getX(), r.getY(), col));
         }
     }
     private void addPoint(double x, double y, double r, PointState match)

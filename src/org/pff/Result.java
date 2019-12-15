@@ -127,7 +127,10 @@ public class Result implements Serializable {
         smatch = genStringMatch(match);
     }
     public static String drawPointJS(float x, float y, String col){
-        return "drawPoint("+Float.toString(x) + ", " + Float.toString(y) + ", "+col+");";
+        return "drawPoint("+ x + ", " + y + ", "+col+");";
+    }
+    public static String drawPointJSD(double x, double y, String col){
+        return "drawPoint("+Double.toString(x) + ", " + Double.toString(y) + ", "+col+");";
     }
     public String getJSColor(){
         return match == PointState.IN ? ("'#00FF00'"):((PointState.OUT == match)?"'#FF0000'":"'#AFAFAF'");
