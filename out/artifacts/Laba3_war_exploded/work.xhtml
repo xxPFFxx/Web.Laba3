@@ -53,13 +53,13 @@
                 </h:selectOneRadio><h:message for="param-r" style="color:red"/>
 
                 <p:remoteCommand name="sendClick"
-                                 action="#{result.checkClick()}" update="result-table" partialSubmit="true" process="@this"/>
+                                 action="#{result.checkClick}" update="result-table" partialSubmit="true" process="@this"/>
                 <p:remoteCommand name="callRedraw"
-                                 action="#{result.callRedraw()}" partialSubmit="true" process="@this"/>
+                                 action="#{result.callRedraw}" partialSubmit="true" process="@this"/>
                 <br/><br/>
                 <h:commandButton type="submit"
                                  value="Отправить"
-                                 action="#{result.addResult()}"
+                                 action="#{result.addResult}"
                                  styleClass="link-go"
                 /><br/><br/>
 
