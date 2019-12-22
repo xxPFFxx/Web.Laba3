@@ -24,7 +24,7 @@ public class ValidatorID implements javax.faces.validator.Validator {
         catch (Exception e) {
             FacesMessage msg =
                     new FacesMessage("Invalid value",
-                            "Invalid Value. Only integer numbers can be use.");
+                            "Могут использоваться только цифры");
             msg.setSeverity(FacesMessage.SEVERITY_ERROR);
             throw new ValidatorException(msg);
         }

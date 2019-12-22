@@ -10,7 +10,6 @@ import javax.faces.validator.ValidatorException;
 public class ValidatorY implements javax.faces.validator.Validator {
     @Override
     public void validate(FacesContext facesContext, UIComponent uiComponent, Object value) throws ValidatorException {
-        System.out.println(value);
         Double y;
         try {
             y = new Double(value.toString());
@@ -22,14 +21,14 @@ public class ValidatorY implements javax.faces.validator.Validator {
         catch (IllegalArgumentException e) {
             FacesMessage msg =
                     new FacesMessage("Invalid value",
-                            "Only digits can be used.");
+                            "Могут использоваться только цифры");
             msg.setSeverity(FacesMessage.SEVERITY_ERROR);
             throw new ValidatorException(msg);
         }
         catch (Exception e){
             FacesMessage msg =
                     new FacesMessage("Value out of bounds",
-                            "Y must be in [-5;5]");
+                            "Y должен принадлежать [-5;5]");
             msg.setSeverity(FacesMessage.SEVERITY_ERROR);
             throw new ValidatorException(msg);
         }
