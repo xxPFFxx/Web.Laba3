@@ -9,13 +9,14 @@ import java.io.Serializable;
 
 @Entity
 @Table(name="results")
+@SecondaryTable(name = "radiuschecking")
 public class Result implements Serializable {
     private static final long serialVersionUID = -5170875020617735653L;
     @Column(name="X")
     private double x;
     @Column(name="Y")
     private double y;
-    @Column(name="R")
+    @Column(name="R", table = "radiuschecking")
     private double r;
     @Id
     @GeneratedValue(generator="GENERATOR_COMMON")
@@ -50,7 +51,7 @@ public class Result implements Serializable {
         this.sessionID = sessionID;
     }
 
-    @Column(name="CHECKING")
+    @Column(name="CHECKING", table = "radiuschecking")
     private int checking;
 
     public int getChecking() {
