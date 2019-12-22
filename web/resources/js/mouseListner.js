@@ -16,3 +16,5 @@ document.getElementById("zoneCanvas").addEventListener("click", function (e) {
         onPointClicked(x,y,r);
     }
 });
+
+

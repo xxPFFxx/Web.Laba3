@@ -53,7 +53,7 @@
                 </h:selectOneRadio><h:message for="param-r" style="color:red"/>
 
                 <p:remoteCommand name="sendClick"
-                                 action="#{result.checkClick}" update="result-table" partialSubmit="true" process="@this"/>
+                                 action="#{result.checkClick}" update="result-table states" partialSubmit="true" process="@this"/>
                 <p:remoteCommand name="callRedraw"
                                  action="#{result.callRedraw}" partialSubmit="true" process="@this"/>
                 <br/><br/>
@@ -61,7 +61,7 @@
                                  value="Отправить"
                                  action="#{result.addResult}"
                                  styleClass="link-go"
-                /><br/><br/>
+                />
 
             </h:form>
 
@@ -74,13 +74,19 @@
                 />
                 <br/>
                 <br/>
-                <h:inputText id="param-id" name="param-id" styleClass="inputID" required="true" maxlength="6" requiredMessage="введите значение ID который хотите удалить">
+                <h:inputText id="param-id" name="param-id" styleClass="inputID" required="true" maxlength="6" requiredMessage="Введите значение ID, которое хотите удалить">
                     <f:validator validatorId="ValidatorID"/>
                 </h:inputText><br/>
                 <h:message for="param-id" style="color:red"/>
                 <p:remoteCommand name="callRedraw"
                                  action="#{result.callRedraw()}" update="result-table" partialSubmit="true" process="@this"/>
             </h:form>
+            <br/><br/><br/>
+            <h:outputFormat id = "states" styleClass="label-go" value = "Число попаданий : {0}, Число промахов : {1}, Число точек вне ОДЗ : {2}" >
+                <f:param value = "#{result.in}" />
+                <f:param value = "#{result.out}" />
+                <f:param value = "#{result.odz}" />
+            </h:outputFormat>
             <br/><br/><br/>
             <p:outputPanel id="runtime_panel" autoUpdate="true" />
 

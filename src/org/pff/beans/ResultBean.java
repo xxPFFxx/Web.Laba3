@@ -2,6 +2,7 @@ package org.pff.beans;
 import org.hibernate.Session;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.query.Query;
 import org.hibernate.service.ServiceRegistry;
 import org.primefaces.PrimeFaces;
 import org.pff.ParamsManager;
@@ -35,6 +36,33 @@ public class ResultBean implements Serializable {
     private double curX = 0;
     private double curY = 0;
     private double curR = 2;
+    private int in = 0;
+    private int out = 0;
+    private int odz = 0;
+
+    public int getIn() {
+        return in;
+    }
+
+    public void setIn(int in) {
+        this.in = in;
+    }
+
+    public int getOut() {
+        return out;
+    }
+
+    public void setOut(int out) {
+        this.out = out;
+    }
+
+    public int getOdz() {
+        return odz;
+    }
+
+    public void setOdz(int odz) {
+        this.odz = odz;
+    }
 
     public double getCurX() {
         return curX;
@@ -115,7 +143,6 @@ public class ResultBean implements Serializable {
                 addPoint(x,y,r, PointState.ODZ);
                 col = "'#AFAFAF'";
             }
-            System.out.println("stfu");
             PrimeFaces.current().executeScript(drawPointJS(x, y, col));
             //return addResult(x,y,r);
 
@@ -135,11 +162,17 @@ public class ResultBean implements Serializable {
         for (int i = 0; i < res.size(); i++) {
             Result r = res.get(i);
             String col;
-            if (ParamsManager.isInArea(r.getX(),r.getY(),ssr)){
-                col = "'#00FF00'";
-            } else {
-                col = "'#FF0000'";
+            if (ParamsManager.isValidX(r.getX()) && ParamsManager.isValidY(r.getY())){
+                if (ParamsManager.isInArea(r.getX(),r.getY(),ssr)){
+                    col = "'#00FF00'";
+                } else {
+                    col = "'#FF0000'";
+                }
             }
+            else {
+                col = "'#AFAFAF'";
+            }
+
             PrimeFaces.current().executeScript(drawPointJSD(r.getX(), r.getY(), col));
         }
     }
@@ -151,11 +184,33 @@ public class ResultBean implements Serializable {
             ormSession.getTransaction().begin();
             ormSession.createQuery("delete from Result e where e.resultID = :id").setParameter("id", id).executeUpdate();
             ormSession.getTransaction().commit();
+            setPointsStates();
         }catch (Exception e){
             ormSession.getTransaction().rollback();
         }
     }
+    public void setPointsStates(){
+        try{
+            ormSession.getTransaction().begin();
+            Query query = ormSession.createQuery("from Result where checking = :state").setParameter("state", 0);
+            ormSession.getTransaction().commit();
+            List<Result> resultList= query.list();
+            setIn(resultList.size());
+            ormSession.getTransaction().begin();
+            Query query2 = ormSession.createQuery("from Result where checking = :state").setParameter("state", 1);
+            ormSession.getTransaction().commit();
+            List<Result> resultList2= query2.list();
+            setOut(resultList2.size());
+            ormSession.getTransaction().begin();
+            Query query3 = ormSession.createQuery("from Result where checking = :state").setParameter("state", 2);
+            ormSession.getTransaction().commit();
+            List<Result> resultList3= query3.list();
+            setOdz(resultList3.size());
 
+        }catch (Exception e){
+            ormSession.getTransaction().rollback();
+        }
+    }
     private void addPoint(double x, double y, double r, PointState match)
     {
         try{
@@ -168,6 +223,7 @@ public class ResultBean implements Serializable {
 
 
             data.add(new Result(x,y,r, match,sessionID));
+            setPointsStates();
 
         }
         catch (Exception e){
@@ -175,7 +231,6 @@ public class ResultBean implements Serializable {
         }
     }
     public List<Result> getAllResults(){
-        System.out.println("Triggered");
         ArrayList<Result> temp = new ArrayList<>(data);
         Collections.reverse(temp);
         CriteriaBuilder builder = ormSession.getCriteriaBuilder();
