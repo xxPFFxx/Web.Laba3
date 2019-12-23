@@ -10,6 +10,7 @@ import org.pff.PointState;
 import org.pff.Result;
 
 import javax.ejb.ApplicationException;
+import javax.el.MethodExpression;
 import javax.faces.bean.ApplicationScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -263,4 +264,33 @@ public class ResultBean implements Serializable {
         }
     }
 
+    public void updateRDB() {
+        Map<String, String> requestParameterMap = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+        String sr = requestParameterMap.get("dbR").replace(',','.');
+        double doubleR= Double.parseDouble(sr);
+        List<Result> res = getAllResults();
+        for (int i = 0; i < res.size(); i++) {
+            PointState state;
+            Result r = res.get(i);
+            if (ParamsManager.isValidX(r.getX()) && ParamsManager.isValidY(r.getY())) {
+                if (ParamsManager.isInArea(r.getX(), r.getY(), doubleR)) {
+                    state = PointState.IN;
+                    r.setSmatch("Попал");
+                } else {
+                    state = PointState.OUT;
+                    r.setSmatch("Не попал");
+                }
+            } else {
+                state = PointState.ODZ;
+                r.setSmatch("Не в одз");
+            }
+            ormSession.getTransaction().begin();
+            int rows = ormSession.createQuery("update Result set checking=:param where resultID=:param2").setParameter("param",PointState.toInt(state)).setParameter("param2", r.getResultID()).executeUpdate();
+            ormSession.getTransaction().commit();
+        }
+        ormSession.getTransaction().begin();
+        int rows = ormSession.createQuery("update Result set r=:param").setParameter("param",doubleR).executeUpdate();
+        ormSession.getTransaction().commit();
+        setPointsStates();
+    }
 }

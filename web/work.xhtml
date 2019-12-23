@@ -45,13 +45,14 @@
                 <div class="d-header">
                     Выберите R
                 </div>
-                <h:selectOneRadio id="param-r" name="param-r" layout="lineDirection" styleClass="radioR" onchange="redraw();" value="#{result.curR}">
+                <h:selectOneRadio id="param-r" name="param-r" layout="lineDirection" styleClass="radioR" onchange="redraw(); updateR()" value="#{result.curR}">
                     <f:selectItem itemLabel="2.0" itemValue="2.0"/>
                     <f:selectItem itemLabel="3.0" itemValue="3.0"/>
                     <f:selectItem itemLabel="4.0" itemValue="4.0"/>
                     <f:selectItem itemLabel="5.0" itemValue="5.0"/>
                 </h:selectOneRadio><h:message for="param-r" style="color:red"/>
-
+                <p:remoteCommand name="updateRDB"
+                                 action="#{result.updateRDB()}" update="result-table states" partialSubmit="true" process="@this"/>
                 <p:remoteCommand name="sendClick"
                                  action="#{result.checkClick}" update="result-table states" partialSubmit="true" process="@this"/>
                 <p:remoteCommand name="callRedraw"
