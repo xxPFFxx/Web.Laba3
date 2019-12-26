@@ -215,10 +215,15 @@ public class ResultBean implements Serializable {
     private void addPoint(double x, double y, double r, PointState match)
     {
         try{
-
+            String sx = String.format("%.2f",x).replace(",",".");
+            double xx = Double.parseDouble(sx);
+            String sy = String.format("%.2f",y).replace(",",".");
+            double yy = Double.parseDouble(sy);
+            String sr = String.format("%.2f",r).replace(",",".");
+            double rr = Double.parseDouble(sr);
             ormSession.getTransaction().begin();
 
-            ormSession.save(new Result(x,y,r, match,sessionID));
+            ormSession.save(new Result(xx,yy,rr, match,sessionID));
 
             ormSession.getTransaction().commit();
 
